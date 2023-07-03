@@ -17,7 +17,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    private float jumpDelay = 0.1f;
 
     private void Awake()
     {
