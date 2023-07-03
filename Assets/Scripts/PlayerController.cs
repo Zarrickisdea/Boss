@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
     private Vector2 moveVector;
     private bool isJumping;
     private bool isGrounded;
+    private bool gotDetected;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float groundCheckDistance;

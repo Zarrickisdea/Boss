@@ -126,3 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raycastDistance: 20
   direction: {x: 0, y: 1, z: 0}
+  detectionTime: 2.5
+  player: {fileID: 7495514386932901916, guid: ddd7ba9665aaadc4b9c5ef4e3d6775dd, type: 3}
