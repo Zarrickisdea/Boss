@@ -113,5 +113,9 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("hittin");
         }
+        else if (collision.gameObject.CompareTag("Triggerman"))
+        {
+            collision.gameObject.GetComponent<TriggerScript>().SwitchBlockers();
+        }
     }
 }

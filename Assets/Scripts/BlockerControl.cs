@@ -9,6 +9,7 @@ public class BlockerControl : MonoBehaviour
     [SerializeField] private float waitTime = 2f;
 
     private Vector3 initialPosition;
+    private bool isWorking = true;
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class BlockerControl : MonoBehaviour
 
     private IEnumerator MoveUpAndDownCoroutine()
     {
-        while (true)
+        while (isWorking)
         {
             // Move up
             yield return new WaitForSeconds(waitTime);
@@ -45,5 +46,11 @@ public class BlockerControl : MonoBehaviour
         }
 
         transform.position = targetPosition;
+    }
+
+    private void OnDisable()
+    {
+        isWorking = false;
+        GetComponent<BlockerVertexPath>().enabled = true;
     }
 }
