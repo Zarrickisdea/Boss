@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    private float jumpDelay = 0.1f;
 
     private void Awake()
     {
@@ -94,7 +95,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
         isGrounded = hit.collider != null;
 
-        if (isJumping && rb.velocity.y <= 0 && isGrounded)
+        if (isJumping && isGrounded)
         {
             isJumping = false;
         }

@@ -10,13 +10,14 @@ public class BlockerControl : MonoBehaviour
 
     private Vector3 initialPosition;
     private bool isWorking = true;
+    private Coroutine moveCoroutine;
 
     private void Start()
     {
         initialPosition = transform.position;
 
         // Start the movement coroutine
-        StartCoroutine(MoveUpAndDownCoroutine());
+        moveCoroutine = StartCoroutine(MoveUpAndDownCoroutine());
     }
 
     private IEnumerator MoveUpAndDownCoroutine()
@@ -51,6 +52,11 @@ public class BlockerControl : MonoBehaviour
     private void OnDisable()
     {
         isWorking = false;
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
         GetComponent<BlockerVertexPath>().enabled = true;
     }
 }
