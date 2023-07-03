@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
     private Vector2 moveVector;
     private bool isJumping;
     private bool isGrounded;
+    private bool gotDetected;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float groundCheckDistance;
@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
         isGrounded = hit.collider != null;
 
-        if (isJumping && rb.velocity.y <= 0 && isGrounded)
+        if (isJumping && isGrounded)
         {
             isJumping = false;
         }
@@ -112,6 +112,10 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Endpoint"))
         {
             Debug.Log("hittin");
+        }
+        else if (collision.gameObject.CompareTag("Triggerman"))
+        {
+            collision.gameObject.GetComponent<TriggerScript>().SwitchBlockers();
         }
     }
 }

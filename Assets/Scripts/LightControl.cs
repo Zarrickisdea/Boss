@@ -5,23 +5,27 @@ public class LightControl : MonoBehaviour
 {
     [SerializeField] private float raycastDistance;
     [SerializeField] private Vector3 direction;
+    [SerializeField] private float detectionTime = 2.5f;
+    [SerializeField] private PlayerController player;
     private Light2D light2D;
+    private float burnTimer;
+    private bool isTimerRunning;
 
     private void Awake()
     {
         light2D = GetComponent<Light2D>();
     }
 
-    // very expensive, but near perfect simulation of a search light in 2D environment
     private void FixedUpdate()
     {
         Vector3 raycastDirection = transform.TransformDirection(direction);
         float upAngle = light2D.pointLightOuterAngle / 2;
         float downAngle = -upAngle;
 
-        // only good for smaller cones, for bigger ones use more than 3 rays, angles will have to be calculated based on the light
         RaycastHit2D[] hits = new RaycastHit2D[3];
         float[] angles = { 0f, upAngle, downAngle };
+
+        bool playerDetected = false; // Flag to indicate if the player is detected
 
         for (int i = 0; i < angles.Length; i++)
         {
@@ -30,22 +34,37 @@ public class LightControl : MonoBehaviour
 
             if (hits[i].collider != null && hits[i].collider.CompareTag("Player"))
             {
-                PlayerController playerController = hits[i].collider.GetComponent<PlayerController>();
-                if (playerController != null)
-                {
-                    playerController.Burn(); // Call the desired function on the player controller
-                }
+                playerDetected = true;
+                break;
             }
         }
 
+        if (playerDetected)
+        {
+            if (!isTimerRunning)
+            {
+                burnTimer = 0f;
+                isTimerRunning = true;
+                Debug.Log("Timer started!");
+            }
+            else
+            {
+                burnTimer += Time.fixedDeltaTime;
+                Debug.Log("Timer: " + burnTimer);
 
-
-        //Debug.DrawRay(transform.position, raycastDirection * raycastDistance, Color.red);
-        //Debug.DrawRay(transform.position, upDirection * raycastDistance, Color.green);
-        //Debug.DrawRay(transform.position, downDirection * raycastDistance, Color.blue);
+                if (burnTimer >= detectionTime)
+                {
+                    Debug.Log("Executing burn action!");
+                    player.Burn();
+                    burnTimer = 0f;
+                    isTimerRunning = false;
+                }
+            }
+        }
+        else
+        {
+            burnTimer = 0f;
+            isTimerRunning = false;
+        }
     }
 }
-
-
-
-

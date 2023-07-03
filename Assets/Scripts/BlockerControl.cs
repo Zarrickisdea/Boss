@@ -9,18 +9,20 @@ public class BlockerControl : MonoBehaviour
     [SerializeField] private float waitTime = 2f;
 
     private Vector3 initialPosition;
+    private bool isWorking = true;
+    private Coroutine moveCoroutine;
 
     private void Start()
     {
         initialPosition = transform.position;
 
         // Start the movement coroutine
-        StartCoroutine(MoveUpAndDownCoroutine());
+        moveCoroutine = StartCoroutine(MoveUpAndDownCoroutine());
     }
 
     private IEnumerator MoveUpAndDownCoroutine()
     {
-        while (true)
+        while (isWorking)
         {
             // Move up
             yield return new WaitForSeconds(waitTime);
@@ -45,5 +47,16 @@ public class BlockerControl : MonoBehaviour
         }
 
         transform.position = targetPosition;
+    }
+
+    private void OnDisable()
+    {
+        isWorking = false;
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+        GetComponent<BlockerVertexPath>().enabled = true;
     }
 }
