@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - Endpoint
   - Triggerman
+  - Triggerpeople
   layers:
   - Default
   - TransparentFX

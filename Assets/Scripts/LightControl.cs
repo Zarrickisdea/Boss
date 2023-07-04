@@ -7,6 +7,8 @@ public class LightControl : MonoBehaviour
     [SerializeField] private Vector3 direction;
     [SerializeField] private float detectionTime = 2.5f;
     [SerializeField] private PlayerController player;
+    [SerializeField] private Color initialColor;
+    [SerializeField] private Color targetColor;
     private Light2D light2D;
     private float burnTimer;
     private bool isTimerRunning;
@@ -14,6 +16,11 @@ public class LightControl : MonoBehaviour
     private void Awake()
     {
         light2D = GetComponent<Light2D>();
+    }
+
+    private void Start()
+    {
+        light2D.color = initialColor;
     }
 
     private void FixedUpdate()
@@ -45,26 +52,30 @@ public class LightControl : MonoBehaviour
             {
                 burnTimer = 0f;
                 isTimerRunning = true;
-                Debug.Log("Timer started!");
             }
             else
             {
                 burnTimer += Time.fixedDeltaTime;
-                Debug.Log("Timer: " + burnTimer);
 
                 if (burnTimer >= detectionTime)
                 {
-                    Debug.Log("Executing burn action!");
                     player.Burn();
                     burnTimer = 0f;
                     isTimerRunning = false;
                 }
+
+                float t = Mathf.Clamp01(burnTimer / detectionTime);
+                Color currentColor = Color.Lerp(initialColor, targetColor, t);
+
+                light2D.color = currentColor;
             }
         }
         else
         {
             burnTimer = 0f;
             isTimerRunning = false;
+
+            light2D.color = initialColor;
         }
     }
 }
