@@ -12,6 +12,12 @@ public class BlockerControl : MonoBehaviour
     private bool isWorking = true;
     private Coroutine moveCoroutine;
 
+    public float WaitTime
+    {
+        get => waitTime;
+        set => waitTime = value;
+    }
+
     private void Start()
     {
         initialPosition = transform.position;

@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
     private Vector2 moveVector;
     private bool isJumping;
     private bool isGrounded;
-    private bool gotDetected;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
     [SerializeField] private float groundCheckDistance;
@@ -109,13 +108,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Endpoint"))
+        switch (collision.gameObject.tag)
         {
-            Debug.Log("hittin");
-        }
-        else if (collision.gameObject.CompareTag("Triggerman"))
-        {
-            collision.gameObject.GetComponent<TriggerScript>().SwitchBlockers();
+            case "Endpoint":
+                Debug.Log("hittin");
+                break;
+            case "Triggerman":
+                collision.gameObject.GetComponent<TriggerScript>().SwitchBlockers();
+                break;
+            case "Triggerpeople":
+                collision.gameObject.GetComponent<TriggerScript>().ErraticBlockers();
+                break;
+            default:
+                break;
         }
     }
 }
