@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckDistance;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private string nextScene;
 
     private PlayerInput playerInput;
     private Rigidbody2D rb;
@@ -37,17 +40,28 @@ public class PlayerController : MonoBehaviour
 
     public void OnActionTriggered(InputAction.CallbackContext value)
     {
-        if (value.action.name == "Move")
+        switch (value.action.name)
         {
-            moveVector = value.ReadValue<Vector2>();
-        }
-        else if (value.action.name == "Jump")
-        {
-            if (value.performed && isGrounded)
-            {
-                isJumping = true;
-                rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
-            }
+            case "Move":
+                moveVector = value.ReadValue<Vector2>();
+                break;
+
+            case "Jump":
+                if (value.performed && isGrounded)
+                {
+                    isJumping = true;
+                    rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+                }
+                break;
+
+            case "Pause":
+                bool isMenuActive = !pauseMenu.activeSelf;
+                pauseMenu.SetActive(isMenuActive);
+                Time.timeScale = isMenuActive ? 0f : 1f;
+                break;
+
+            default:
+                break;
         }
     }
 
@@ -103,7 +117,7 @@ public class PlayerController : MonoBehaviour
 
     public void Burn()
     {
-        Debug.Log("gotcha");
+        SceneManager.LoadScene("GameOver");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -111,7 +125,7 @@ public class PlayerController : MonoBehaviour
         switch (collision.gameObject.tag)
         {
             case "Endpoint":
-                Debug.Log("hittin");
+                SceneManager.LoadScene(nextScene);
                 break;
             case "Triggerman":
                 collision.gameObject.GetComponent<TriggerScript>().SwitchBlockers();

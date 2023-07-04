@@ -22,7 +22,6 @@ public class BlockerControl : MonoBehaviour
     {
         initialPosition = transform.position;
 
-        // Start the movement coroutine
         moveCoroutine = StartCoroutine(MoveUpAndDownCoroutine());
     }
 

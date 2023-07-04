@@ -56,7 +56,6 @@ public class LightControl : MonoBehaviour
             else
             {
                 burnTimer += Time.fixedDeltaTime;
-                //Debug.Log("Timer: " + burnTimer);
 
                 if (burnTimer >= detectionTime)
                 {
@@ -65,11 +64,9 @@ public class LightControl : MonoBehaviour
                     isTimerRunning = false;
                 }
 
-                // Calculate the current color based on the burn timer progress
                 float t = Mathf.Clamp01(burnTimer / detectionTime);
                 Color currentColor = Color.Lerp(initialColor, targetColor, t);
 
-                // Apply the current color to the light
                 light2D.color = currentColor;
             }
         }
