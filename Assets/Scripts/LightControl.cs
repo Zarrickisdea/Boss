@@ -69,6 +69,8 @@ public class LightControl : MonoBehaviour
 
                 light2D.color = currentColor;
             }
+
+            AudioManager.Instance.PlayEffect(AudioManager.Effects.Detect);
         }
         else
         {
