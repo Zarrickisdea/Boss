@@ -35,4 +35,9 @@ public class ButtonHandler : MonoBehaviour
         #endif
         Application.Quit();
     }
+
+    public void SoundEffect()
+    {
+        AudioManager.Instance.PlayEffect(AudioManager.Effects.Button);
+    }
 }

@@ -65,6 +65,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        AudioManager.Instance.PlayBGM(AudioManager.BackgroundSound.Gameplay);
+    }
+
     private void Update()
     {
         UpdateAnimation();
@@ -118,6 +123,7 @@ public class PlayerController : MonoBehaviour
     public void Burn()
     {
         SceneManager.LoadScene("GameOver");
+        AudioManager.Instance.StopMusic();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -136,5 +142,7 @@ public class PlayerController : MonoBehaviour
             default:
                 break;
         }
+
+        AudioManager.Instance.PlayEffect(AudioManager.Effects.Switch);
     }
 }
