@@ -3,6 +3,7 @@ using UnityEngine;
 public abstract class BaseState
 {
     protected StateMachine stateMachine;
+    protected float stateTimer;
 
     public BaseState(StateMachine stateMachine)
     {
