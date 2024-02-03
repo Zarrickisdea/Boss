@@ -32,7 +32,7 @@ public class LightControl : MonoBehaviour
         RaycastHit2D[] hits = new RaycastHit2D[3];
         float[] angles = { 0f, upAngle, downAngle };
 
-        bool playerDetected = false; // Flag to indicate if the player is detected
+        bool playerDetected = false;
 
         for (int i = 0; i < angles.Length; i++)
         {
