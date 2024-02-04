@@ -1,6 +1,8 @@
+using UnityEngine;
 public interface IMoveInDirection
 {
-    void setDirection(UnityEngine.Vector3 direction);
-    void moveIndDirection();
-    void waitForSeconds(float seconds);
+    void setDirection(Vector3 direction);
+    void moveInDirection(Vector3 targetPosition);
+    void stateOn(float seconds);
+    void stateOff(float seconds);
 }

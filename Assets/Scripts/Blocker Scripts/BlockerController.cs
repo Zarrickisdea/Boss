@@ -5,6 +5,11 @@ public class BlockerController : MonoBehaviour
 {
     [SerializeField] private Transform[] pathPoints;
 
+    [SerializeField] private float upDistance = 2f;
+    [SerializeField] private float upTime = 1f;
+    [SerializeField] private float downTime = 1f;
+    [SerializeField] private float waitTime = 2f;
+
     private StateMachine blockerStateMachine;
     private BlockerUpState blockerUpState;
     private BlockerDownState blockerDownState;
@@ -30,7 +35,6 @@ public class BlockerController : MonoBehaviour
     private void Start()
     {
         blockerStateMachine.Initialize(blockerUpState);
-        Debug.Log("BlockerController initialized with " + GetState("blockerUpState"));
     }
 
     private void Update()

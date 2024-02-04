@@ -3,8 +3,10 @@ using UnityEngine;
 public class BlockerUpState : BlockerBaseState, IMoveInDirection
 {
     private Vector3 direction;
-    private float moveSpeed;
-    private float rotationTime;
+    private Vector3 initialPosition;
+    private Vector3 targetPosition;
+    private float upOnTimer = 1f;
+    private float upOffTimer = 2f;
 
     public BlockerUpState(StateMachine stateMachine, BlockerController blockerController) : base(stateMachine, blockerController)
     {
@@ -13,8 +15,10 @@ public class BlockerUpState : BlockerBaseState, IMoveInDirection
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("Entered Up State at position: " + blockerController.transform.position);
         setDirection(Vector3.up);
-        moveIndDirection();
+        initialPosition = blockerController.transform.position;
+        targetPosition = initialPosition + direction * 2f;
     }
 
     public override void Exit()
@@ -30,8 +34,31 @@ public class BlockerUpState : BlockerBaseState, IMoveInDirection
     public override void Update()
     {
         base.Update();
-        waitForSeconds(2f);
-        //blockerController.transform.position = Vector3.Lerp(blockerController.transform.position, blockerController.transform.position + direction * 2f, 1f);
+
+        if (stateOnTimer < upOnTimer)
+        {
+            stateOn(upOnTimer);
+        }
+        else
+        {
+            stateOff(upOffTimer);
+        }
+    }
+
+    public void stateOn(float seconds)
+    {
+        stateOnTimer += Time.deltaTime;
+        moveInDirection(targetPosition);
+    }
+
+    public void stateOff(float seconds)
+    {
+        stateOffTimer += Time.deltaTime;
+
+        if (stateOffTimer >= seconds)
+        {
+            stateMachine.ChangeState(blockerController.GetState("blockerDownState"));
+        }
     }
 
     public void setDirection(Vector3 direction)
@@ -39,19 +66,9 @@ public class BlockerUpState : BlockerBaseState, IMoveInDirection
         this.direction = direction;
     }
 
-    public void waitForSeconds(float seconds)
-    {
-        Debug.Log("stateTimer: " + stateTimer + " at Up State");
-        stateTimer += Time.deltaTime;
-        if (stateTimer >= seconds)
-        {
-            stateMachine.ChangeState(blockerController.GetState("blockerDownState"));
-        }
-    }
-
-    public void moveIndDirection()
+    public void moveInDirection(Vector3 targetPosition)
     {
         Debug.Log("Moving Up");
-        blockerController.transform.position = Vector3.Lerp(blockerController.transform.position, blockerController.transform.position + direction * 2f, 1f);
+        blockerController.transform.position = Vector3.Lerp(initialPosition, targetPosition, stateOnTimer / 2f);
     }
 }

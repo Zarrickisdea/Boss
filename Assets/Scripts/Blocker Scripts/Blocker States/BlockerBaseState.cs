@@ -11,13 +11,15 @@ public class BlockerBaseState : BaseState
     public override void Enter()
     {
         base.Enter();
-        stateTimer = 0;
+        stateOnTimer = 0;
+        stateOffTimer = 0;
     }
 
     public override void Exit()
     {
         base.Exit();
-        stateTimer = 0;
+        stateOnTimer = 0;
+        stateOffTimer = 0;
     }
 
     public override void FixedUpdate()
