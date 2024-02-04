@@ -5,20 +5,24 @@ public class BlockerDownState : BlockerBaseState, IMoveInDirection
     private Vector3 direction;
     private Vector3 initialPosition;
     private Vector3 targetPosition;
-    private float downOnTimer = 1f;
-    private float downOffTimer = 2f;
+    private float downOnTimer;
+    private float downOffTimer;
 
-    public BlockerDownState(StateMachine stateMachine, BlockerController blockerController) : base(stateMachine, blockerController)
+    private float distance;
+
+    public BlockerDownState(StateMachine stateMachine, BlockerController blockerController, float onTimer, float offTimer, float distance) : base(stateMachine, blockerController)
     {
+        downOnTimer = onTimer;
+        downOffTimer = offTimer;
+        this.distance = distance;
     }
 
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Entered Down State at position: " + blockerController.transform.position);
         setDirection(Vector3.down);
         initialPosition = blockerController.transform.position;
-        targetPosition = initialPosition + direction * 2f;
+        targetPosition = initialPosition + direction * distance;
     }
 
     public override void Exit()
@@ -66,7 +70,6 @@ public class BlockerDownState : BlockerBaseState, IMoveInDirection
 
     public void moveInDirection(Vector3 targetPosition)
     {
-        Debug.Log("Moving Down");
-        blockerController.transform.position = Vector3.Lerp(initialPosition, targetPosition, stateOnTimer / 2f);
+        blockerController.transform.position = Vector3.Lerp(initialPosition, targetPosition, stateOnTimer / downOnTimer);
     }
 }

@@ -5,7 +5,7 @@ public class BlockerController : MonoBehaviour
 {
     [SerializeField] private Transform[] pathPoints;
 
-    [SerializeField] private float upDistance = 2f;
+    [SerializeField] private float distance = 2f;
     [SerializeField] private float upTime = 1f;
     [SerializeField] private float downTime = 1f;
     [SerializeField] private float waitTime = 2f;
@@ -25,8 +25,8 @@ public class BlockerController : MonoBehaviour
     {
         blockerStateMachine = new StateMachine();
 
-        blockerUpState = new BlockerUpState(blockerStateMachine, this);
-        blockerDownState = new BlockerDownState(blockerStateMachine, this);
+        blockerUpState = new BlockerUpState(blockerStateMachine, this, upTime, waitTime, distance);
+        blockerDownState = new BlockerDownState(blockerStateMachine, this, downTime, waitTime, distance);
 
         blockerStates.Add("blockerUpState", blockerUpState);
         blockerStates.Add("blockerDownState", blockerDownState);
