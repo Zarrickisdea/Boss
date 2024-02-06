@@ -17,11 +17,12 @@ public class TriggerScript : MonoBehaviour
         {
             if (blockers[i] != null)
             {
-                BlockerControl blockerControl = blockers[i].GetComponent<BlockerControl>();
 
-                if (blockerControl != null && blockerControl.enabled)
+                BlockerController blockerController = blockers[i].GetComponent<BlockerController>();
+
+                if (blockerController != null && blockerController.enabled)
                 {
-                    blockerControl.enabled = false;
+                    blockerController.ChangeState("blockerPathTravelState");
                 }
             }
         }
@@ -30,18 +31,17 @@ public class TriggerScript : MonoBehaviour
 
     public void ErraticBlockers()
     {
-        for (int i = 0;i < blockers.Length;i++)
+        for (int i = 0; i < blockers.Length; i++)
         {
             if (blockers[i] != null)
             {
-                BlockerControl blockerControl = blockers[i].GetComponent<BlockerControl> ();
+                BlockerController blockerController = blockers[i].GetComponent<BlockerController>();
 
-                if (blockerControl != null && blockerControl.enabled)
+                if (blockerController != null && blockerController.enabled)
                 {
-                    blockerControl.WaitTime = Random.Range(0f, 1f);
+                    blockerController.ChangeState("blockerUpState");
                 }
             }
         }
-        triggerSwitch.enabled = false;
     }
 }
